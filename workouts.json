@@ -2,7 +2,7 @@
     "key": "7minute",
     "title": "7 Minute Workout",
     "order": "strict+random",
-    "rest": 7,
+    "rest": 10,
     "exercises": [{
         "key": "jumpingjacks",
         "time": 30
@@ -49,7 +49,7 @@
     "key": "quick2",
     "title": "Quick 2 Minutes",
     "order": "strict",
-    "rest": 8,
+    "rest": 10,
     "exercises": [{
         "key": "pushups",
         "time": 20

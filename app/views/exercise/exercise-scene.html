@@ -8,10 +8,16 @@
     <img src="images/get-ready.png" id="imgExercise" class="imgExercise" /><br/>
 </div>
 
-<div id="divSpinnerContainer" style="width: 130px;margin-left: auto;margin-right: auto; align-items: center;">
+<div id="divSpinnerContainer" style="width: 130px;margin-left: auto;margin-right: auto; margin-top: 30px; align-items: center;">
     <div x-mojo-element="Spinner" class="spinnerClass" id="timerSpinner" name="timerSpinner"></div>
 </div>
 
 <div id="divTimer" style="width: 70px;margin-left: auto;margin-right: auto; margin-top:-78px; align-items: center;display:none">
-    <div id="divTimerValue" name="divTimerValue" style="text-align: center;color:darkgray;">30</div>
+    <div id="divTimerValue" name="divTimerValue" style="text-align: center;color:dimgrey;">30</div>
 </div>
+
+<audio id="audioPlayer">
+    <source src="sounds/lets-get-started.mp3" type="audio/mp3">
+</audio>
+
+<div x-mojo-element="ProgressBar" id="progressWorkout" class="progressbarClass" name="progressWorkout" style="position: absolute; top: 332px; left: 60px; width: 200px"></div>

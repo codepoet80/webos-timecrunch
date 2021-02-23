@@ -96,8 +96,8 @@ MainAssistant.prototype.handleCommand = function(event) {
         switch (event.command) {
             case 'do-Preferences':
                 //var stageController = Mojo.Controller.stageController;
-                var stageController = Mojo.Controller.getAppController().getActiveStageController();
-                stageController.pushScene({ name: "preferences", disableSceneScroller: false });
+                //var stageController = Mojo.Controller.getAppController().getActiveStageController();
+                //stageController.pushScene({ name: "preferences", disableSceneScroller: false });
                 break;
             case 'do-myAbout':
                 Mojo.Additions.ShowDialogBox("Time Crunch - " + Mojo.Controller.appInfo.version, "Exercises for busy people, webOS edition. Copyright 2021, Jon Wise. Distributed under an MIT License.<br>Source code available at: https://github.com/codepoet80/webos-timecrunch");

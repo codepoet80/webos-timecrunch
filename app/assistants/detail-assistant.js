@@ -37,14 +37,7 @@ DetailAssistant.prototype.setup = function() {
     this.controller.setupWidget('workingSpinner', this.spinnerAttrs, this.spinnerModel);
     //Menu
     this.appMenuAttributes = { omitDefaultItems: true };
-    this.appMenuModel = {
-        label: "Settings",
-        items: [
-            Mojo.Menu.editItem,
-            { label: "Preferences", command: 'do-Preferences' },
-            { label: "About", command: 'do-myAbout' }
-        ]
-    };
+    this.appMenuModel = {};
     this.controller.setupWidget(Mojo.Menu.appMenu, this.appMenuAttributes, this.appMenuModel);
     //Command Buttons
     this.cmdMenuAttributes = {
