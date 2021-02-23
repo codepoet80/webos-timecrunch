@@ -80,6 +80,7 @@ ExerciseAssistant.prototype.scaleUI = function(orientation) {
                 Mojo.Log.info("top: " + this.controller.get("progressWorkout").style.top);
                 this.controller.get("progressWorkout").style.top = "384px";
             }
+            //TODO: Veer and Pixi
         } else {
             if (this.controller.window.screen.height < this.controller.window.screen.width) { //touchpad orientations are sideways from phones
                 //wide
