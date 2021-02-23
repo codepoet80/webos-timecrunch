@@ -86,13 +86,13 @@ ExerciseAssistant.prototype.scaleUI = function(orientation) {
                 //wide
                 this.controller.get("imgExercise").className = "imgExercise Wide";
                 this.controller.get("progressWorkout").style.width = "200px";
-                this.controller.get("progressWorkout").style.left = "410px";
+                this.controller.get("progressWorkout").style.left = "407px";
                 this.controller.get("progressWorkout").style.top = "645px";
             } else {
                 //tall
                 this.controller.get("imgExercise").className = "imgExercise Tall";
                 this.controller.get("progressWorkout").style.width = "200px";
-                this.controller.get("progressWorkout").style.left = "282px";
+                this.controller.get("progressWorkout").style.left = "280px";
                 this.controller.get("progressWorkout").style.top = "905px";
             }
         }
@@ -247,7 +247,7 @@ ExerciseAssistant.prototype.takeARest = function(skipRestAnnounce) {
     if (!skipRestAnnounce) {
         this.controller.window.setTimeout(function() {
             this.playAudio("sounds/take-a-rest.mp3");
-        }.bind(this), 1500);
+        }.bind(this), 200);
     }
     this.controller.get("divTimerValue").innerHTML = appModel.LastSelectedWorkout.rest || 3;
     this.intervalTimer = this.controller.window.setInterval(this.decrementRestSpinner.bind(this), 1000);
@@ -274,17 +274,16 @@ ExerciseAssistant.prototype.decrementRestSpinner = function() {
         else
             this.playAudio("sounds/next-exercise.mp3");
     }
-    if ((time == 5 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 4 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 6 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 5 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
         var soundPath;
         if (this.exerciseCount < this.exercises.length) {
             var nextExercise = this.exercises[this.exerciseCount];
             soundPath = "exercises/" + nextExercise.key + "/" + nextExercise.audio;
+            this.playAudio(soundPath);
             this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
-            Mojo.Log.info("sound path: " + soundPath);
         }
-        this.playAudio(soundPath);
     }
-    if (time == 1) {
+    if ((time == 2 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 1 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
         this.playAudio("sounds/ding.mp3");
     }
     if (time <= 0) {
