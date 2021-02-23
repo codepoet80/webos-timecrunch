@@ -1,0 +1,127 @@
+ [{
+     "key": "highknees",
+     "title": "High Knees",
+     "icon": "icon.png",
+     "audio": "HighKnees.mp3",
+     "images": [
+         "HighKnees1.png",
+         "HighKnees2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "jumpingjacks",
+     "title": "Jumping Jacks",
+     "icon": "icon.png",
+     "audio": "JumpingJacks.mp3",
+     "images": [
+         "JumpingJacks1.png",
+         "JumpingJacks2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "lunge",
+     "title": "Lunge",
+     "icon": "icon.png",
+     "audio": "Lunge.mp3",
+     "images": [
+         "Lunge1.png",
+         "Lunge2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "plank",
+     "title": "Plank",
+     "icon": "icon.png",
+     "audio": "Plank.mp3",
+     "images": [
+         "Plank.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "pushups",
+     "title": "Push Ups",
+     "icon": "icon.png",
+     "audio": "PushUps.mp3",
+     "images": [
+         "Pushup1.png",
+         "Pushup2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "pushuprotate",
+     "title": "Pushup and Rotate",
+     "icon": "icon.png",
+     "audio": "PushupRotate.mp3",
+     "images": [
+         "PushupRotate1.png",
+         "PushupRotate2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "sideplankleft",
+     "title": "Side Plank Left",
+     "icon": "icon.png",
+     "audio": "SidePlankLeft.mp3",
+     "images": [
+         "SidePlankLeft.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "sideplankright",
+     "title": "Side Plank Right",
+     "icon": "icon.png",
+     "audio": "SidePlankRight.mp3",
+     "images": [
+         "SidePlankRight.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "situps",
+     "title": "Sit Ups",
+     "icon": "icon.png",
+     "audio": "SitUps.mp3",
+     "images": [
+         "Situps1.png",
+         "Situps2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "squats",
+     "title": "Squats",
+     "icon": "icon.png",
+     "audio": "Squats.mp3",
+     "images": [
+         "Squats1.png",
+         "Squats2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "stepup",
+     "title": "Step Up",
+     "icon": "icon.png",
+     "audio": "StepUp.mp3",
+     "images": [
+         "StepUp1.png",
+         "StepUp2.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "wallsit",
+     "title": "Wall Sit",
+     "icon": "icon.png",
+     "audio": "WallSit.mp3",
+     "images": [
+         "WallSit.png"
+     ],
+     "defaultTime": 30
+ }, {
+     "key": "tricepdips",
+     "title": "Tricep Dips",
+     "icon": "icon.png",
+     "audio": "TricepDips.mp3",
+     "images": [
+         "TricepDips1.png",
+         "TricepDips2.png"
+     ],
+     "defaultTime": 30
+ }]

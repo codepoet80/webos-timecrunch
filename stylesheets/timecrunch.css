@@ -1,0 +1,40 @@
+/* TODO: put your application-specific CSS here */
+
+.palm-page-header .header-icon.preferences {
+    background: url(../icon.png) no-repeat;
+    background-size: 32px 32px;
+}
+
+.exercise-row {
+    padding: 8px 0px 8px 8px;
+}
+
+.exercise-detail {
+    margin-top: 4px;
+    padding-bottom: 6px;
+    font-size: 12px;
+    font-style: italic;
+    color: dimgray;
+}
+
+.exercise-icon {
+    float: right;
+    margin-top: 12px;
+    width: 32px;
+    height: 32px
+}
+
+.imgExercise {
+    width: 128px;
+    height: 128px;
+}
+
+.imgExercise.Wide {
+    width: 384px;
+    height: 384px;
+}
+
+.imgExercise.Tall {
+    width: 512px;
+    height: 512px;
+}

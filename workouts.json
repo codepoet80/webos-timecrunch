@@ -1,0 +1,69 @@
+[{
+    "key": "7minute",
+    "title": "7 Minute Workout",
+    "order": "strict+random",
+    "rest": 7,
+    "exercises": [{
+        "key": "jumpingjacks",
+        "time": 30
+    }, {
+        "key": "wallsit",
+        "time": 30
+    }, {
+        "key": "pushups",
+        "time": 30
+    }, {
+        "key": "situps",
+        "time": 30
+    }, {
+        "key": "stepup",
+        "time": 30
+    }, {
+        "key": "squats",
+        "time": 30
+    }, {
+        "key": "tricepdips",
+        "time": 30
+    }, {
+        "key": "plank",
+        "time": 30
+    }, {
+        "key": "highknees",
+        "time": 30
+    }, {
+        "key": "lunge",
+        "time": 30
+    }, {
+        "key": "pushuprotate",
+        "time": 30
+    }, {
+        "key": "sideplankleft",
+        "time": 30,
+        "combine": "sideplank"
+    }, {
+        "key": "sideplankright",
+        "time": 30,
+        "combine": "sideplank"
+    }]
+}, {
+    "key": "quick2",
+    "title": "Quick 2 Minutes",
+    "order": "strict",
+    "rest": 8,
+    "exercises": [{
+        "key": "pushups",
+        "time": 20
+    }, {
+        "key": "highknees",
+        "time": 20
+    }, {
+        "key": "pushuprotate",
+        "time": 20
+    }, {
+        "key": "stepup",
+        "time": 20
+    }, {
+        "key": "tricepdips",
+        "time": 20
+    }]
+}]

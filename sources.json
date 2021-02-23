@@ -1,0 +1,19 @@
+[
+    { "source": "app/assistants/app-assistant.js" },
+    { "source": "app/assistants/stage-assistant.js" },
+    {
+        "scenes": "main",
+        "source": "app/assistants/main-assistant.js"
+    },
+    {
+        "scenes": "detail",
+        "source": "app/assistants/detail-assistant.js"
+    },
+    {
+        "scenes": "exercise",
+        "source": "app/assistants/exercise-assistant.js"
+    },
+    { "source": "app/models/app-model.js" },
+    { "source": "app/models/system-model.js" },
+    { "source": "app/models/updater-model.js" }
+]

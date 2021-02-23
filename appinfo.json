@@ -1,0 +1,12 @@
+{
+    "id": "com.jonandnic.timecrunch",
+    "version": "0.5.0",
+    "vendor": "Jon Wise",
+    "type": "web",
+    "main": "index.html",
+    "noWindow": true,
+    "title": "Time Crunch (Beta)",
+    "uiRevision": "2",
+    "splashicon": "icon-256.png",
+    "icon": "icon.png"
+}
