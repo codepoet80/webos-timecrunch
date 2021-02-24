@@ -5,6 +5,7 @@ function ExerciseAssistant() {
        that needs the scene controller should be done in the setup function below. */
 }
 
+/* Start of Lifecycle */
 ExerciseAssistant.prototype.setup = function() {
 
     //Command Buttons
@@ -61,10 +62,12 @@ ExerciseAssistant.prototype.activate = function(event) {
     this.startWorkout(appModel.LastSelectedWorkout);
 };
 
+/* UI Event Handlers */
+
 //This is called by Mojo on phones, but has to be manually attached on TouchPad. Let's handle this system-wide (with a scene-specific callback)
 ExerciseAssistant.prototype.orientationChanged = function(orientation) {
     systemModel.OrientationChanged(this.controller, this.scaleUI.bind(this));
-};
+}
 
 //Callback for orientation change to calculate the right size for scene elements
 ExerciseAssistant.prototype.scaleUI = function(orientation) {
@@ -99,21 +102,48 @@ ExerciseAssistant.prototype.scaleUI = function(orientation) {
     }
 }
 
-ExerciseAssistant.prototype.playAudio = function(soundPath) {
-    var audioPlayer = this.controller.get("audioPlayer");
-    if (soundPath) {
-        Mojo.Log.info("trying to play audio: " + soundPath);
-        audioPlayer.src = soundPath;
-        audioPlayer.load();
+ExerciseAssistant.prototype.handleCommand = function(event) {
+    if (event.type == Mojo.Event.command) {
+        switch (event.command) {
+            case 'do-goBack':
+                var stageController = Mojo.Controller.getAppController().getActiveStageController();
+                stageController.pushScene({ name: "main", disableSceneScroller: false });
+                break;
+            case 'do-pauseWorkout':
+                this.handlePlayPause();
+                break;
+        }
     }
-    audioPlayer.play();
+};
+
+ExerciseAssistant.prototype.handlePlayPause = function() {
+    var thisWidgetSetup = this.controller.getWidgetSetup(Mojo.Menu.commandMenu);
+    var pauseButton = this.cmdMenuModel.items[1].items[0];
+    if (!this.paused) {
+        Mojo.Log.info("Pausing...");
+        this.pauseAudio();
+        this.controller.get("divWorkoutTitle").innerHTML = "Paused";
+        pauseButton.iconPath = "images/play.png";
+        this.controller.window.clearInterval(this.intervalTimer);
+        this.controller.window.clearInterval(this.interveralImage);
+        this.controller.get("imgExercise").src = "images/rest.png";
+        if (this.exerciseCount > 0)
+            this.exerciseCount--;
+        this.stopSpinner();
+        this.paused = true;
+    } else {
+        Mojo.Log.info("Resuming next exercise...");
+        this.controller.get("divWorkoutTitle").innerHTML = "Resuming";
+        pauseButton.iconPath = "images/pause.png";
+        this.controller.get("divTimerValue").innerHTML = appModel.LastSelectedWorkout.rest || 3;
+        this.paused = false;
+        this.startSpinner();
+        this.takeARest(true);
+    }
+    this.controller.modelChanged(thisWidgetSetup.model);
 }
 
-ExerciseAssistant.prototype.pauseAudio = function() {
-    var audioPlayer = this.controller.get("audioPlayer");
-    audioPlayer.pause();
-}
-
+/* Actual Workout Stuff */
 ExerciseAssistant.prototype.startWorkout = function(workout) {
     this.exercises = workout.exercises;
     this.exerciseCount = 0;
@@ -156,16 +186,7 @@ ExerciseAssistant.prototype.doNextExercise = function() {
         this.playAudio(soundPath);
         this.exerciseCount++;
     } else {
-        this.playAudio("sounds/workout-complete.mp3");
-        this.controller.get("divWorkoutTitle").innerHTML = "Complete!";
-        this.updateProgressBar(true);
-        this.stopSpinner();
-        this.controller.get("imgExercise").src = "images/great-job.png";
-        this.controller.window.setTimeout(function() {
-            this.playAudio("sounds/you-did-it.mp3");
-            Mojo.Controller.getAppController().playSoundNotification("vibrate");
-        }.bind(this), 2500);
-        systemModel.AllowDisplaySleep();
+        this.finishWorkout();
     }
 }
 
@@ -253,38 +274,45 @@ ExerciseAssistant.prototype.takeARest = function(skipRestAnnounce) {
     this.intervalTimer = this.controller.window.setInterval(this.decrementRestSpinner.bind(this), 1000);
 }
 
-ExerciseAssistant.prototype.updateProgressBar = function(done) {
-    Mojo.Log.info("% done: " + (this.exerciseCount / this.exercises.length));
-    var thisWidgetSetup = this.controller.getWidgetSetup("progressWorkout");
-    var thisWidgetModel = thisWidgetSetup.model;
-    thisWidgetModel.progress = (this.exerciseCount / this.exercises.length);
-    if (done)
-        thisWidgetModel.progress = 1;
-    this.controller.setWidgetModel("progressWorkout", thisWidgetModel);
-    this.controller.modelChanged(thisWidgetModel);
-}
-
 ExerciseAssistant.prototype.decrementRestSpinner = function() {
     var time = this.controller.get("divTimerValue").innerHTML;
     time = (time * 1) - 1;
     this.controller.get("divTimerValue").innerHTML = time;
+
+    if (this.exerciseCount < this.exercises.length)
+        var nextExercise = this.exercises[this.exerciseCount];
+
     if ((time == 8 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 7 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
         if (this.exerciseCount + 1 >= this.exercises.length)
             this.playAudio("sounds/last-exercise.mp3");
         else
             this.playAudio("sounds/next-exercise.mp3");
     }
+    if ((time == 7 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 6 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+        if (nextExercise) {
+            this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
+            var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[0];
+            this.controller.get("imgExercise").src = imagePath;
+        }
+    }
     if ((time == 6 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 5 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
         var soundPath;
-        if (this.exerciseCount < this.exercises.length) {
+        if (nextExercise) {
             var nextExercise = this.exercises[this.exerciseCount];
             soundPath = "exercises/" + nextExercise.key + "/" + nextExercise.audio;
             this.playAudio(soundPath);
-            this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
         }
+    }
+    if ((time == 5 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 4 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+        this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
+
+        var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[this.currentExercise.images - 1];
+        this.controller.get("imgExercise").src = imagePath;
     }
     if ((time == 2 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 1 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
         this.playAudio("sounds/ding.mp3");
+        var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[0];
+        this.controller.get("imgExercise").src = imagePath;
     }
     if (time <= 0) {
         Mojo.Controller.getAppController().playSoundNotification("vibrate");
@@ -293,14 +321,54 @@ ExerciseAssistant.prototype.decrementRestSpinner = function() {
     }
 }
 
-ExerciseAssistant.prototype.toggleExerciseImage = function() {
-    if (this.currentExercise.images.length > 0) {
-        var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[1];
-        if (this.currentImage == imagePath)
-            imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[0];
-        this.currentImage = imagePath;
-        this.controller.get("imgExercise").src = imagePath;
+ExerciseAssistant.prototype.finishWorkout = function() {
+    this.playAudio("sounds/workout-complete.mp3");
+    this.controller.get("divWorkoutTitle").innerHTML = "Complete!";
+    this.updateProgressBar(true);
+    this.stopSpinner();
+    this.controller.get("imgExercise").src = "images/great-job.png";
+    this.controller.window.setTimeout(function() {
+        this.playAudio("sounds/you-did-it.mp3");
+        Mojo.Controller.getAppController().playSoundNotification("vibrate");
+    }.bind(this), 2500);
+    systemModel.AllowDisplaySleep();
+}
+
+/* End of Lifecycle */
+ExerciseAssistant.prototype.deactivate = function(event) {
+    /* remove any event handlers you added in activate and do any other cleanup that should happen before
+       this scene is popped or another scene is pushed on top */
+    Mojo.Log.info("Main scene deactivated " + Mojo.Controller.appInfo.id);
+    this.controller.window.clearInterval(this.intervalTimer);
+    this.controller.window.clearInterval(this.interveralImage);
+    this.controller.get("imgExercise").src = "images/get-ready.png";
+    this.pauseAudio();
+
+    //Detach UI
+    this.controller.window.removeEventListener('resize', this.orientationChanged);
+};
+
+ExerciseAssistant.prototype.cleanup = function(event) {
+    /* this function should do any cleanup needed before the scene is destroyed as 
+       a result of being popped off the scene stack */
+    var appController = Mojo.Controller.getAppController();
+    appController.closeAllStages();
+};
+
+/* Helper Functions */
+ExerciseAssistant.prototype.playAudio = function(soundPath) {
+    var audioPlayer = this.controller.get("audioPlayer");
+    if (soundPath) {
+        Mojo.Log.info("trying to play audio: " + soundPath);
+        audioPlayer.src = soundPath;
+        audioPlayer.load();
     }
+    audioPlayer.play();
+}
+
+ExerciseAssistant.prototype.pauseAudio = function() {
+    var audioPlayer = this.controller.get("audioPlayer");
+    audioPlayer.pause();
 }
 
 ExerciseAssistant.prototype.startSpinner = function(time) {
@@ -323,63 +391,23 @@ ExerciseAssistant.prototype.stopSpinner = function(time) {
     this.controller.get("divTimerValue").innerHTML = "0";
 }
 
-ExerciseAssistant.prototype.handleCommand = function(event) {
-    if (event.type == Mojo.Event.command) {
-        switch (event.command) {
-            case 'do-goBack':
-                var stageController = Mojo.Controller.getAppController().getActiveStageController();
-                stageController.pushScene({ name: "main", disableSceneScroller: false });
-                break;
-            case 'do-pauseWorkout':
-                this.handlePlayPause();
-                break;
-        }
+ExerciseAssistant.prototype.toggleExerciseImage = function() {
+    if (this.currentExercise.images.length > 0) {
+        var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[1];
+        if (this.currentImage == imagePath)
+            imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[0];
+        this.currentImage = imagePath;
+        this.controller.get("imgExercise").src = imagePath;
     }
-};
-
-ExerciseAssistant.prototype.handlePlayPause = function() {
-    var thisWidgetSetup = this.controller.getWidgetSetup(Mojo.Menu.commandMenu);
-    var pauseButton = this.cmdMenuModel.items[1].items[0];
-    if (!this.paused) {
-        Mojo.Log.info("Pausing...");
-        this.pauseAudio();
-        this.controller.get("divWorkoutTitle").innerHTML = "Paused";
-        pauseButton.iconPath = "images/play.png";
-        this.controller.window.clearInterval(this.intervalTimer);
-        this.controller.window.clearInterval(this.interveralImage);
-        this.controller.get("imgExercise").src = "images/rest.png";
-        if (this.exerciseCount > 0)
-            this.exerciseCount--;
-        this.stopSpinner();
-        this.paused = true;
-    } else {
-        Mojo.Log.info("Resuming next exercise...");
-        this.controller.get("divWorkoutTitle").innerHTML = "Resuming";
-        pauseButton.iconPath = "images/pause.png";
-        this.controller.get("divTimerValue").innerHTML = appModel.LastSelectedWorkout.rest || 3;
-        this.paused = false;
-        this.startSpinner();
-        this.takeARest(true);
-    }
-    this.controller.modelChanged(thisWidgetSetup.model);
 }
 
-ExerciseAssistant.prototype.deactivate = function(event) {
-    /* remove any event handlers you added in activate and do any other cleanup that should happen before
-       this scene is popped or another scene is pushed on top */
-    Mojo.Log.info("Main scene deactivated " + Mojo.Controller.appInfo.id);
-    this.controller.window.clearInterval(this.intervalTimer);
-    this.controller.window.clearInterval(this.interveralImage);
-    this.controller.get("imgExercise").src = "images/get-ready.png";
-    this.pauseAudio();
-
-    //Detach UI
-    this.controller.window.removeEventListener('resize', this.orientationChanged);
-};
-
-ExerciseAssistant.prototype.cleanup = function(event) {
-    /* this function should do any cleanup needed before the scene is destroyed as 
-       a result of being popped off the scene stack */
-    var appController = Mojo.Controller.getAppController();
-    appController.closeAllStages();
-};
+ExerciseAssistant.prototype.updateProgressBar = function(done) {
+    Mojo.Log.info("% done: " + (this.exerciseCount / this.exercises.length));
+    var thisWidgetSetup = this.controller.getWidgetSetup("progressWorkout");
+    var thisWidgetModel = thisWidgetSetup.model;
+    thisWidgetModel.progress = (this.exerciseCount / this.exercises.length);
+    if (done)
+        thisWidgetModel.progress = 1;
+    this.controller.setWidgetModel("progressWorkout", thisWidgetModel);
+    this.controller.modelChanged(thisWidgetModel);
+}
