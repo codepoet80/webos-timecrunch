@@ -22,7 +22,7 @@ ExerciseAssistant.prototype.setup = function() {
             },
             {
                 items: [
-                    { label: 'Pause', iconPath: 'images/pause.png', command: 'do-pauseWorkout' }
+                    { label: 'Pause', iconPath: 'images/pause.png', command: 'do-pauseWorkout', disabled: true }
                 ]
             }
         ]
@@ -165,7 +165,7 @@ ExerciseAssistant.prototype.startWorkout = function(workout) {
 
 ExerciseAssistant.prototype.doNextExercise = function() {
     this.controller.window.clearInterval(this.interveralImage);
-
+    this.disablePauseButton(false);
     if (this.exerciseCount < this.exercises.length) {
         this.currentExercise = this.exercises[this.exerciseCount];
         Mojo.Log.info("Current Exercise: " + JSON.stringify(this.currentExercise));
@@ -288,31 +288,34 @@ ExerciseAssistant.prototype.decrementRestSpinner = function() {
         else
             this.playAudio("sounds/next-exercise.mp3");
     }
-    if ((time == 7 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 6 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
-        if (nextExercise) {
-            this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
-            var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[0];
-            this.controller.get("imgExercise").src = imagePath;
-        }
-    }
-    if ((time == 6 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 5 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 5 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 4 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+
         var soundPath;
         if (nextExercise) {
+            this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
             var nextExercise = this.exercises[this.exerciseCount];
             soundPath = "exercises/" + nextExercise.key + "/" + nextExercise.audio;
             this.playAudio(soundPath);
         }
     }
-    if ((time == 5 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 4 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
-        this.controller.get("divWorkoutTitle").innerHTML = "Next Up: " + nextExercise.title;
-
-        var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[this.currentExercise.images - 1];
-        this.controller.get("imgExercise").src = imagePath;
+    if ((time == 4 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 3 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+        if (nextExercise) {
+            var imagePath = "exercises/" + nextExercise.key + "/" + nextExercise.images[0];
+            this.controller.get("imgExercise").src = imagePath;
+        }
+    }
+    if ((time == 3 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 2 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+        if (nextExercise) {
+            var imagePath = "exercises/" + nextExercise.key + "/" + nextExercise.images[nextExercise.images.length - 1];
+            this.controller.get("imgExercise").src = imagePath;
+        }
     }
     if ((time == 2 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 1 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
         this.playAudio("sounds/ding.mp3");
-        var imagePath = "exercises/" + this.currentExercise.key + "/" + this.currentExercise.images[0];
-        this.controller.get("imgExercise").src = imagePath;
+        if (nextExercise) {
+            var imagePath = "exercises/" + nextExercise.key + "/" + nextExercise.images[0];
+            this.controller.get("imgExercise").src = imagePath;
+        }
     }
     if (time <= 0) {
         Mojo.Controller.getAppController().playSoundNotification("vibrate");
@@ -332,6 +335,7 @@ ExerciseAssistant.prototype.finishWorkout = function() {
         Mojo.Controller.getAppController().playSoundNotification("vibrate");
     }.bind(this), 2500);
     systemModel.AllowDisplaySleep();
+    this.disablePauseButton(true);
 }
 
 /* End of Lifecycle */
@@ -369,6 +373,18 @@ ExerciseAssistant.prototype.playAudio = function(soundPath) {
 ExerciseAssistant.prototype.pauseAudio = function() {
     var audioPlayer = this.controller.get("audioPlayer");
     audioPlayer.pause();
+}
+
+ExerciseAssistant.prototype.disablePauseButton = function(disabled) {
+
+    var stageController = Mojo.Controller.getAppController().getActiveStageController();
+    if (stageController) {
+        this.controller = stageController.activeScene();
+        var thisWidgetSetup = this.controller.getWidgetSetup(Mojo.Menu.commandMenu);
+        var thisWidgetModel = thisWidgetSetup.model;
+        thisWidgetModel.items[1].items[0].disabled = disabled;
+        this.controller.modelChanged(thisWidgetModel);
+    }
 }
 
 ExerciseAssistant.prototype.startSpinner = function(time) {
