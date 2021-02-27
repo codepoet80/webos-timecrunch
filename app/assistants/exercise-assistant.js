@@ -74,7 +74,7 @@ ExerciseAssistant.prototype.scaleUI = function(orientation) {
     if (!this.orientation || this.orientation != orientation) {
         Mojo.Log.info("scaling for device type: " + systemModel.DeviceType);
         this.orientation = orientation;
-        if (systemModel.DeviceType.toLowerCase() != "touchpad") {
+        if (systemModel.DeviceType.toLowerCase() != "touchpad") { //Phones
             //For phones, it doesn't make sense to allow wide orientations
             //  But we need this for initial setup, so we'll force it to always be tall
             this.controller.stageController.setWindowOrientation("up");
@@ -83,8 +83,12 @@ ExerciseAssistant.prototype.scaleUI = function(orientation) {
                 Mojo.Log.info("top: " + this.controller.get("progressWorkout").style.top);
                 this.controller.get("progressWorkout").style.top = "384px";
             }
-            //TODO: Veer and Pixi
-        } else {
+            if (systemModel.DeviceType.toLowerCase() == "tiny") {
+                this.controller.get("divSpinnerContainer").style.marginTop = "0px";
+                this.controller.get("divImageContainer").style.paddingTop = "-10px";
+                this.controller.get("progressWorkout").style.top = "286px";
+            }
+        } else { //TouchPad
             if (this.controller.window.screen.height < this.controller.window.screen.width) { //touchpad orientations are sideways from phones
                 //wide
                 this.controller.get("imgExercise").className = "imgExercise Wide";
