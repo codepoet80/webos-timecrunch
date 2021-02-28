@@ -87,10 +87,12 @@ DetailAssistant.prototype.handleListReorder = function(event) {
 }
 
 DetailAssistant.prototype.handleListDelete = function(event) {
+
     var thisTaskList = this.controller.getWidgetSetup("exerciseList");
     var items = thisTaskList.model.items;
-    items.delete(event.item);
+    items.remove(event.item);
     Mojo.Log.info("Item deleted: " + event.item.key);
+
 }
 
 DetailAssistant.prototype.handleCommand = function(event) {
@@ -194,7 +196,7 @@ Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
-Array.prototype.delete = function(item) {
+Array.prototype.remove = function(item) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] === item) {
             this.splice(i, 1);
