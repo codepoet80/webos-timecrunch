@@ -37,8 +37,6 @@ MainAssistant.prototype.setup = function() {
     this.appMenuModel = {
         label: "Settings",
         items: [
-            Mojo.Menu.editItem,
-            { label: "Preferences", command: 'do-Preferences' },
             { label: "About", command: 'do-myAbout' }
         ]
     };

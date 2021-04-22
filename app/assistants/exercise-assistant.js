@@ -292,7 +292,7 @@ ExerciseAssistant.prototype.decrementRestSpinner = function() {
         else
             this.playAudio("sounds/next-exercise.mp3");
     }
-    if ((time == 5 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 4 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 6 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 5 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
 
         var soundPath;
         if (nextExercise) {
