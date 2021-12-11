@@ -69,6 +69,7 @@ MainAssistant.prototype.activate = function(event) {
         var stageController = Mojo.Controller.getAppController().getActiveStageController();
         stageController.pushScene({ name: "version", disableSceneScroller: false });
         appModel.AppSettingsCurrent["LastVersionRun"] = currVersion;
+        appModel.SaveSettings();
         welcomed = true;
     }
 

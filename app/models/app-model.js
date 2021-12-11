@@ -15,13 +15,13 @@ var AppModel = function() {
     this.UpdateCheckDone = false;
     this.LaunchQuery = "";
     this.LastSelectedWorkout = null;
-    this.LastVersionRun = null;
 
     //Define your app preferences (to be saved by OS)
     this.AppSettingsCurrent = null;
     this.AppSettingsDefaults = {
         FirstRun: true,
-        LastSelectedWorkout: null
+        LastSelectedWorkout: null,
+        LastVersionRun: null
     };
 }
 
