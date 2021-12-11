@@ -366,6 +366,10 @@ ExerciseAssistant.prototype.cleanup = function(event) {
 /* Helper Functions */
 ExerciseAssistant.prototype.playAudio = function(soundPath) {
     var audioPlayer = this.controller.get("audioPlayer");
+    audioPlayer.pause();
+    this.libs = MojoLoader.require({ name: "mediaextension", version: "1.0"});
+    this.audioExt = this.libs.mediaextension.MediaExtension.getInstance(audioPlayer);
+    this.audioExt.audioClass = "feedback";     //defaultapp, media, feedback, ringtone;
     if (soundPath) {
         Mojo.Log.info("trying to play audio: " + soundPath);
         audioPlayer.src = soundPath;

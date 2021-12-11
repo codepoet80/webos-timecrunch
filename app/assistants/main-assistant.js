@@ -64,9 +64,12 @@ MainAssistant.prototype.handleUpdateResponse = function(responseObj) {
 MainAssistant.prototype.activate = function(event) {
 
     //Figure out if this is our first time
-    if (appModel.AppSettingsCurrent["FirstRun"] || (appModel.AppSettingsCurrent["SenderName"] && appModel.AppSettingsCurrent["SenderName"].toLowerCase() == "webos user")) {
-        appModel.AppSettingsCurrent["FirstRun"] = false;
-        Mojo.Log.warn("Welcome screen not implemented!");
+    var currVersion = Mojo.Controller.appInfo.version;
+    if (!welcomed && (!appModel.AppSettingsCurrent["LastVersionRun"] || appModel.AppSettingsCurrent["LastVersionRun"] != currVersion)) {
+        var stageController = Mojo.Controller.getAppController().getActiveStageController();
+        stageController.pushScene({ name: "version", disableSceneScroller: false });
+        appModel.AppSettingsCurrent["LastVersionRun"] = currVersion;
+        welcomed = true;
     }
 
     this.getWorkouts();

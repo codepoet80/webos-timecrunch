@@ -1,6 +1,6 @@
 /*
 System Model
- Version 1.2
+ Version 1.3
  Created: 2021
  Author: Jonathan Wise
  License: MIT
@@ -171,6 +171,21 @@ SystemModel.prototype.PlayAlertSound = function(soundName, duration) {
         Mojo.Log.info("trying to play: " + soundPath);
         Mojo.Controller.getAppController().playSoundNotification("media", soundPath, duration);
     }
+}
+
+//Vibrate the device
+SystemModel.prototype.LockVolumeKeys = function() {
+    Mojo.Log.info("Locking to volume keys");
+    this.wakeupRequest = new Mojo.Service.Request("palm://com.palm.audio/media", {
+        method: "lockVolumeKeys",
+        onSuccess: function(response) {
+            Mojo.Log.info("Lock Volume Keys Success", JSON.stringify(response));
+        },
+        onFailure: function(response) {
+            Mojo.Log.error("Lock Volume Keys Failure: ", JSON.stringify(response));
+        }
+    });
+    return true;
 }
 
 //Vibrate the device

@@ -5,6 +5,7 @@ var appModel = null;
 var updaterModel = null;
 var systemModel = null;
 var MainStageName = "main";
+var welcomed = false;
 Mojo.Additions = Additions;
 
 function AppAssistant() {
