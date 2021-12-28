@@ -225,6 +225,7 @@ SystemModel.prototype.LaunchApp = function(appName, params) {
 }
 
 //Figures out and returns the device type, also sets a SystemModel property called DeviceType for reference later (is that necessary?)
+//    TODO: Replace this call
 SystemModel.prototype.GetDeviceType = function(controller) {
     if (!controller)
         controller = Mojo.Controller.getAppController(); //TODO: I don't know if this works
@@ -249,6 +250,7 @@ SystemModel.prototype.GetDeviceType = function(controller) {
 }
 
 //Used to normalize orientation between device types
+//    TODO: don't use this
 SystemModel.prototype.OrientationChanged = function(controller, callback) {
 
     if (!controller) {
