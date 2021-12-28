@@ -164,4 +164,24 @@
         "SideKneeCrunchLeft2.png"
     ],
     "defaultTime": 30
+}, {
+    "key": "armraises",
+    "title": "Arm Raises",
+    "icon": "icon.png",
+    "audio": "armraises.mp3",
+    "images": [
+        "ArmRaises1.png",
+        "ArmRaises2.png"
+    ],
+    "defaultTime": 30
+}, {
+    "key": "supermanpull",
+    "title": "Superman Pull",
+    "icon": "icon.png",
+    "audio": "supermanpull.mp3",
+    "images": [
+        "SupermanPull1.png",
+        "SupermanPull2.png"
+    ],
+    "defaultTime": 30
 }]

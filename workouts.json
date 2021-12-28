@@ -66,4 +66,79 @@
         "key": "tricepdips",
         "time": 20
     }]
+}, {
+    "key": "legday",
+    "title": "6 Minute Leg Day",
+    "order": "strict+random",
+    "rest": 10,
+    "exercises": [{
+        "key": "lunge",
+        "time": 30
+    }, {
+        "key": "squats",
+        "time": 30
+    }, {
+        "key": "legraiseright",
+        "time": 30
+    }, {
+        "key": "legraiseleft",
+        "time": 30
+    }, {
+        "key": "highknees",
+        "time": 30
+    }, {
+        "key": "sideplankleft",
+        "time": 30
+    }, {
+        "key": "sideplankright",
+        "time": 30
+    }, {
+        "key": "sidekneecrunchleft",
+        "time": 30
+    }, {
+        "key": "sidekneecrunchright",
+        "time": 30
+    }, {
+        "key": "wallsit",
+        "time": 30
+    }, {
+        "key": "stepup",
+        "time": 30
+    }, {
+        "key": "plank",
+        "time": 30
+    }]
+}, {
+    "key": "armday",
+    "title": "5 Minute Arm Day",
+    "order": "strict+random",
+    "rest": 10,
+    "exercises": [{
+        "key": "armraises",
+        "time": 45
+    }, {
+        "key": "plank",
+        "time": 45
+    }, {
+        "key": "jumpingjacks",
+        "time": 30
+    }, {
+        "key": "tricepdips",
+        "time": 30
+    }, {
+        "key": "pushups",
+        "time": 30
+    }, {
+        "key": "supermanpull",
+        "time": 30
+    }, {
+        "key": "sideplankleft",
+        "time": 30
+    }, {
+        "key": "sideplankright",
+        "time": 30
+    }, {
+        "key": "pushuprotate",
+        "time": 30
+    }]
 }]
