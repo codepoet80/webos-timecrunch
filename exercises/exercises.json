@@ -124,4 +124,44 @@
          "TricepDips2.png"
      ],
      "defaultTime": 30
- }]
+ }, {
+    "key": "legraiseleft",
+    "title": "Leg Raise Left",
+    "icon": "icon.png",
+    "audio": "legraiseleft.mp3",
+    "images": [
+        "LegRaiseLeft1.png",
+        "LegRaiseLeft2.png"
+    ],
+    "defaultTime": 30
+}, {
+    "key": "legraiseright",
+    "title": "Leg Raise Right",
+    "icon": "icon.png",
+    "audio": "legraiseright.mp3",
+    "images": [
+        "LegRaiseRight1.png",
+        "LegRaiseRight2.png"
+    ],
+    "defaultTime": 30
+}, {
+    "key": "sidekneecrunchright",
+    "title": "Side Knee Crunch Right",
+    "icon": "icon.png",
+    "audio": "sidekneecrunchright.mp3",
+    "images": [
+        "SideKneeCrunchRight1.png",
+        "SideKneeCrunchRight2.png"
+    ],
+    "defaultTime": 30
+}, {
+    "key": "sidekneecrunchleft",
+    "title": "Side Knee Crunch Left",
+    "icon": "icon.png",
+    "audio": "sidekneecrunchleft.mp3",
+    "images": [
+        "SideKneeCrunchLeft1.png",
+        "SideKneeCrunchLeft2.png"
+    ],
+    "defaultTime": 30
+}]
