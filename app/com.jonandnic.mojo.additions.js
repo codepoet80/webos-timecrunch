@@ -8,7 +8,11 @@ Mojo Additions
               They either fix bugs in Mojo or make it easier to use.
 */
 
+//** Note: If you synced this file from a common repository, local edits may be over-written! */
+
 this.Additions = function() {}
+
+Mojo.Log.info("#### Mojo Additions added");
 
 Additions.ShowDialogBox = function(title, message) {
     var stageController = Mojo.Controller.getAppController().getActiveStageController();

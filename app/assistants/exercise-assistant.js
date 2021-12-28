@@ -66,24 +66,50 @@ ExerciseAssistant.prototype.activate = function(event) {
 
 //This is called by Mojo on phones, but has to be manually attached on TouchPad. Let's handle this system-wide (with a scene-specific callback)
 ExerciseAssistant.prototype.orientationChanged = function(orientation) {
-    systemModel.OrientationChanged(this.controller, this.scaleUI.bind(this));
+    this.OrientationChanged(this.controller, this.scaleUI.bind(this));
 }
+
+//Used to normalize orientation between device types
+ExerciseAssistant.prototype.OrientationChanged = function(controller, callback) {
+
+    if (!controller) {
+        var stageController = Mojo.Controller.getAppController().getActiveStageController();
+        if (stageController) {
+            controller = stageController.activeScene();
+        }
+    }
+    if (!this.DeviceType)
+        this.DeviceType = systemModel.DetectDevice();
+
+    if (this.DeviceType != "TouchPad") {
+        //For phones, it doesn't make sense to allow wide orientations
+        //  But we need this for initial setup, so we'll force it to always be tall
+        controller.stageController.setWindowOrientation("up");
+        callback("tall")
+    } else {
+        if (controller.window.screen.height < controller.window.screen.width) { //touchpad orientations are sideways from phones
+            callback("tall");
+        } else {
+            callback("wide");
+        }
+    }
+};
 
 //Callback for orientation change to calculate the right size for scene elements
 ExerciseAssistant.prototype.scaleUI = function(orientation) {
     if (!this.orientation || this.orientation != orientation) {
-        Mojo.Log.info("scaling for device type: " + systemModel.DeviceType);
+        Mojo.Log.info("scaling for device type: " + systemModel.DetectDevice());
         this.orientation = orientation;
-        if (systemModel.DeviceType.toLowerCase() != "touchpad") { //Phones
+        if (systemModel.DetectDevice().toLowerCase() != "touchpad") { //Phones
             //For phones, it doesn't make sense to allow wide orientations
             //  But we need this for initial setup, so we'll force it to always be tall
             this.controller.stageController.setWindowOrientation("up");
             this.controller.get("imgExercise").className = "imgExercise Phone";
-            if (systemModel.DeviceType.toLowerCase() == "pre3") {
+            if (systemModel.DetectDevice().toLowerCase() == "pre3") {
                 Mojo.Log.info("top: " + this.controller.get("progressWorkout").style.top);
                 this.controller.get("progressWorkout").style.top = "384px";
             }
-            if (systemModel.DeviceType.toLowerCase() == "tiny") {
+            if (systemModel.DetectDevice().toLowerCase() == "tiny") {
                 this.controller.get("divSpinnerContainer").style.marginTop = "0px";
                 this.controller.get("divImageContainer").style.paddingTop = "-10px";
                 this.controller.get("progressWorkout").style.top = "286px";
@@ -211,7 +237,7 @@ ExerciseAssistant.prototype.decrementCountdownSpinner = function() {
     var time = this.controller.get("divTimerValue").innerHTML;
     time = (time * 1) - 1;
     this.controller.get("divTimerValue").innerHTML = time;
-    if ((time == 4 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 3 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 4 && systemModel.DetectDevice().toLowerCase() == "touchpad") || (time == 3 && systemModel.DetectDevice().toLowerCase() != "touchpad")) {
         this.playAudio("sounds/3second-countdown.mp3");
     }
     if (time == 2) {
@@ -246,10 +272,10 @@ ExerciseAssistant.prototype.decrementExerciseSpinner = function() {
     var time = this.controller.get("divTimerValue").innerHTML;
     time = (time * 1) - 1;
     this.controller.get("divTimerValue").innerHTML = time;
-    if (time == 4 && systemModel.DeviceType.toLowerCase() == "touchpad") {
+    if (time == 4 && systemModel.DetectDevice().toLowerCase() == "touchpad") {
         this.playAudio("sounds/3second-countdown.mp3")
     }
-    if (time == 3 && systemModel.DeviceType.toLowerCase() != "touchpad") {
+    if (time == 3 && systemModel.DetectDevice().toLowerCase() != "touchpad") {
         this.playAudio("sounds/3second-countdown.mp3")
     }
     if (time <= 0) {
@@ -286,13 +312,13 @@ ExerciseAssistant.prototype.decrementRestSpinner = function() {
     if (this.exerciseCount < this.exercises.length)
         var nextExercise = this.exercises[this.exerciseCount];
 
-    if ((time == 8 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 7 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 8 && systemModel.DetectDevice().toLowerCase() == "touchpad") || (time == 7 && systemModel.DetectDevice().toLowerCase() != "touchpad")) {
         if (this.exerciseCount + 1 >= this.exercises.length)
             this.playAudio("sounds/last-exercise.mp3");
         else
             this.playAudio("sounds/next-exercise.mp3");
     }
-    if ((time == 6 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 5 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 6 && systemModel.DetectDevice().toLowerCase() == "touchpad") || (time == 5 && systemModel.DetectDevice().toLowerCase() != "touchpad")) {
 
         var soundPath;
         if (nextExercise) {
@@ -302,19 +328,19 @@ ExerciseAssistant.prototype.decrementRestSpinner = function() {
             this.playAudio(soundPath);
         }
     }
-    if ((time == 4 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 3 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 4 && systemModel.DetectDevice().toLowerCase() == "touchpad") || (time == 3 && systemModel.DetectDevice().toLowerCase() != "touchpad")) {
         if (nextExercise) {
             var imagePath = "exercises/" + nextExercise.key + "/" + nextExercise.images[0];
             this.controller.get("imgExercise").src = imagePath;
         }
     }
-    if ((time == 3 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 2 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 3 && systemModel.DetectDevice().toLowerCase() == "touchpad") || (time == 2 && systemModel.DetectDevice().toLowerCase() != "touchpad")) {
         if (nextExercise) {
             var imagePath = "exercises/" + nextExercise.key + "/" + nextExercise.images[nextExercise.images.length - 1];
             this.controller.get("imgExercise").src = imagePath;
         }
     }
-    if ((time == 2 && systemModel.DeviceType.toLowerCase() == "touchpad") || (time == 1 && systemModel.DeviceType.toLowerCase() != "touchpad")) {
+    if ((time == 2 && systemModel.DetectDevice().toLowerCase() == "touchpad") || (time == 1 && systemModel.DetectDevice().toLowerCase() != "touchpad")) {
         this.playAudio("sounds/ding.mp3");
         if (nextExercise) {
             var imagePath = "exercises/" + nextExercise.key + "/" + nextExercise.images[0];
