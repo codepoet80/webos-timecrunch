@@ -1,5 +1,7 @@
 # Time Crunch
 
+![App Icon](icon.png)
+
 Quick exercises for busy people.
 
 ## What is This?
