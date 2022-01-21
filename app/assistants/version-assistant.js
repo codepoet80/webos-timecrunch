@@ -6,6 +6,11 @@ function VersionAssistant(startup) {
 
     //New Features
     this.changelog = [{
+            version: "Version 1.5.0",
+            detail: [
+                "Adds new exercises and routines -- don't skip leg day!",
+            ]
+        },{
             version: "Version 1.1.0",
             detail: [
                 "Now using a different audio class so you can listen to music or a podcast while working out. To control workout prompt volume, use System Sounds volume in the Sounds & Ringstone system preference.",
