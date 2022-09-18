@@ -6,6 +6,11 @@ function VersionAssistant(startup) {
 
     //New Features
     this.changelog = [{
+            version: "Version 1.5.1",
+            detail: [
+                "Dark theme now available in main scene's menu!",
+            ]
+        },{
             version: "Version 1.5.0",
             detail: [
                 "Adds new exercises and routines -- don't skip leg day!",
