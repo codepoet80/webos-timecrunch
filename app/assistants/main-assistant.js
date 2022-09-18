@@ -37,6 +37,7 @@ MainAssistant.prototype.setup = function() {
     this.appMenuModel = {
         label: "Settings",
         items: [
+            { label: "Dark Theme", chosen: false, command: 'do-toggleTheme' },
             { label: "About", command: 'do-myAbout' }
         ]
     };
@@ -73,6 +74,20 @@ MainAssistant.prototype.activate = function(event) {
         welcomed = true;
     }
 
+    //Set Theme
+    var thisMenuModel = this.controller.getWidgetSetup(Mojo.Menu.appMenu).model;
+    var newTheme;
+    if (!appModel.AppSettingsCurrent["ThemePreference"] || appModel.AppSettingsCurrent["ThemePreference"] == "palm-default") { 
+        Mojo.Log.info("set to LIGHT theme");
+        thisMenuModel.items[0].chosen = false;
+    } else {
+        Mojo.Log.info("set to DARK theme");
+        thisMenuModel.items[0].chosen = true;
+    }
+    this.controller.modelChanged(thisMenuModel);
+    appModel.SetThemePreference(this.controller);
+    
+    //Load Workouts
     this.getWorkouts();
 };
 
@@ -96,13 +111,29 @@ MainAssistant.prototype.handlePopupChoose = function(task, command) {
 MainAssistant.prototype.handleCommand = function(event) {
     if (event.type == Mojo.Event.command) {
         switch (event.command) {
-            case 'do-Preferences':
+            case 'do-toggleTheme':
+                var thisMenuModel = this.controller.getWidgetSetup(Mojo.Menu.appMenu).model;
+                var newTheme;
+                if (thisMenuModel.items[0].chosen) {
+                    Mojo.Log.info("set to LIGHT theme");
+                    thisMenuModel.items[0].chosen = false;
+                    newTheme = "palm-default";
+                } else {
+                    Mojo.Log.info("set to DARK theme");
+                    thisMenuModel.items[0].chosen = true;
+                    newTheme = "palm-dark";
+                }
+                this.controller.modelChanged(thisMenuModel);
+                appModel.AppSettingsCurrent["ThemePreference"] = newTheme;
+                appModel.SaveSettings();
+                appModel.SetThemePreference(this.controller);
+                break;
                 //var stageController = Mojo.Controller.stageController;
                 //var stageController = Mojo.Controller.getAppController().getActiveStageController();
                 //stageController.pushScene({ name: "preferences", disableSceneScroller: false });
                 break;
             case 'do-myAbout':
-                Mojo.Additions.ShowDialogBox("Time Crunch - " + Mojo.Controller.appInfo.version, "Exercises for busy people, webOS edition. Copyright 2021, Jon Wise. Distributed under an MIT License.<br>Source code available at: https://github.com/codepoet80/webos-timecrunch");
+                Mojo.Additions.ShowDialogBox("Time Crunch - " + Mojo.Controller.appInfo.version, "Exercises for busy people, webOS edition. Copyright 2022, Jon W. Distributed under an MIT License.<br>Source code available at: https://github.com/codepoet80/webos-timecrunch");
                 break;
         }
     }

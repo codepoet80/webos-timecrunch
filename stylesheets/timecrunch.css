@@ -5,6 +5,10 @@
     background-size: 32px 32px;
 }
 
+.palm-dark .header-text {
+    color:lightgray !important;
+}
+
 .exercise-row {
     padding: 8px 0px 8px 8px;
 }
@@ -17,11 +21,21 @@
     color: dimgray;
 }
 
+.palm-dark .exercise-detail {
+    color: lightslategray;
+}
+
 .exercise-icon {
     float: right;
     margin-top: 12px;
     width: 32px;
     height: 32px
+}
+
+.palm-dark .exercise-icon {
+    background-color: lightgrey;
+    border: 2px solid dimgray;
+    border-radius: 8px;
 }
 
 .imgExercise {
@@ -37,4 +51,14 @@
 .imgExercise.Tall {
     width: 512px;
     height: 512px;
+}
+
+.timerValue {
+    text-align: center;
+    color:dimgrey;
+}
+
+.palm-dark .timerValue {
+    text-align: center;
+    color:lightslategray;
 }

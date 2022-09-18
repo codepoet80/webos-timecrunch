@@ -190,7 +190,7 @@ ExerciseAssistant.prototype.startWorkout = function(workout) {
         var soundPath = "exercises/" + this.firstExercise.key + "/" + this.firstExercise.audio;
         this.playAudio(soundPath);
         this.controller.get("divWorkoutTitle").innerHTML = "First up: " + this.firstExercise.title;
-    }.bind(this), 4500);
+    }.bind(this), 4600);
 }
 
 ExerciseAssistant.prototype.doNextExercise = function() {

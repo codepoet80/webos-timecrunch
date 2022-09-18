@@ -16,6 +16,8 @@ function AppAssistant() {
 
 //This function will handle relaunching the app when an alarm goes off(see the device/alarm scene)
 AppAssistant.prototype.handleLaunch = function(params) {
+    Mojo.Log.info("Time Crunch is Launching! Launch params: " + JSON.stringify(params));
+    
     //Load preferences
     appModel.LoadSettings();
     Mojo.Log.info("settings now: " + JSON.stringify(appModel.AppSettingsCurrent));
@@ -26,7 +28,6 @@ AppAssistant.prototype.handleLaunch = function(params) {
 
     //get the proxy for the stage in the event it already exists (eg: app is currently open)
     var mainStage = this.controller.getStageProxy("main");
-    Mojo.Log.info("Time Crunch is Launching! Launch params: " + JSON.stringify(params));
 
     //Reset alarms
     systemModel.ClearSystemAlarm("TimeCrunch");

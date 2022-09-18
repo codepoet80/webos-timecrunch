@@ -1,7 +1,7 @@
 {
     "id": "com.jonandnic.timecrunch",
-    "version": "1.5.0",
-    "vendor": "Jon Wise",
+    "version": "1.5.1",
+    "vendor": "Jon W",
     "type": "web",
     "main": "index.html",
     "noWindow": true,
